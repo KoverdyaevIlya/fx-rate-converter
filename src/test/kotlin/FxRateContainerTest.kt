@@ -13,11 +13,12 @@ class FxRateContainerTest {
         fxRateContainerImpl.add("USDRUB", 92.0, now)
         fxRateContainerImpl.add("USDRUB", 92.5, now + 50)
         fxRateContainerImpl.add("EURRUB", 98.0, now)
+        fxRateContainerImpl.add("EURRUB", 97.0, now)  //there is no duplicate protection now
 
-        assertEquals(fxRateContainerImpl.count(), 3)
+        assertEquals(fxRateContainerImpl.count(), 4)
         assertEquals(fxRateContainerImpl.get("USDRUB", now - 1), null)
         assertEquals(fxRateContainerImpl.get("USDRUB", now), 92.0)
-        assertEquals(fxRateContainerImpl.get("EURRUB", now), 98.0)
+        assertEquals(fxRateContainerImpl.get("EURRUB", now), 97.0)
         assertEquals(fxRateContainerImpl.get("AUDRUB", now), null)
         assertEquals(fxRateContainerImpl.get("USDRUB", now + 49), 92.0)
         assertEquals(fxRateContainerImpl.get("USDRUB", now + 50), 92.5)
