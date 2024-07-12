@@ -44,7 +44,7 @@ public class MyBenchmark {
         public void setUp() {
 
             for (int i = 0; i < iterations; i++) {
-                fxRateContainer.add( isXorEven(i) ? "USDRUB" : "EURRUB", generateFxRate(), Instant.now().toEpochMilli());
+                fxRateContainer.add( calcCcyPair(i), generateFxRate(), Instant.now().toEpochMilli());
 
                 fxRatesList.add(new FxRate(92.0, 2L));
             }
