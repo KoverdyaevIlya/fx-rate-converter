@@ -1,6 +1,7 @@
 fun main(args: Array<String>) {
     println("Hello World!")
 
+
 //    a) You need to write a class / classes that is responsible for keeping
 //    Fx rates from Exchange. Assume that you have a feed from an exchange
 //            where you get Fx rate and time. For instance,
