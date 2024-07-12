@@ -12,7 +12,7 @@ package rates
 //
 //
 //    @State(Scope.Thread)
-//    public class MyState {
+//    public class InitialState {
 //        var employeeList: MutableList<benchmark.FxRate> = ArrayList()
 //        var iterations: Long = 100000
 //        var employee: benchmark.FxRate = benchmark.FxRate(90.0, 1L)
@@ -31,32 +31,32 @@ package rates
 //
 //
 //    @Benchmark
-//    fun testAdd(state: MyState) {
+//    fun testAdd(state: InitialState) {
 //        state.employeeList.add(benchmark.FxRate((state.iterations + 1).toDouble(), Date().time))
 //    }
 //
 //    @Benchmark
-//    fun testAddAt(state: MyState) {
+//    fun testAddAt(state: InitialState) {
 //        state.employeeList.add(state.iterations.toInt(), benchmark.FxRate(state.iterations.toDouble(), Date().time))
 //    }
 //
 //    @Benchmark
-//    fun testContains(state: MyState): Boolean {
+//    fun testContains(state: InitialState): Boolean {
 //        return state.employeeList.contains(state.employee)
 //    }
 //
 //    @Benchmark
-//    fun testIndexOf(state: MyState): Int {
+//    fun testIndexOf(state: InitialState): Int {
 //        return state.employeeList.indexOf(state.employee)
 //    }
 //
 //    @Benchmark
-//    fun testGet(state: MyState): benchmark.FxRate? {
+//    fun testGet(state: InitialState): benchmark.FxRate? {
 //        return state.employeeList[state.employeeIndex]
 //    }
 //
 //    @Benchmark
-//    fun testRemove(state: MyState): Boolean {
+//    fun testRemove(state: InitialState): Boolean {
 //        return state.employeeList.remove(state.employee)
 //    }
 //}

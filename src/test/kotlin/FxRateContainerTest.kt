@@ -47,7 +47,7 @@ class FxRateContainerTest {
         assertEquals(fxRateContainerImpl.average("EURRUB", now + 100, now),  Double.NaN)
 
         println("average is $average")
-        val average2 = fxRateContainerImpl.average2("USDRUB", now + 50, now + 400)
+        val average2 = fxRateContainerImpl.weigthedAverage("USDRUB", now + 50, now + 400)
         println("weighted average is $average2")
 
 

@@ -29,14 +29,16 @@ public class MyBenchmark {
     }
 
     @State(Scope.Thread)
-    public static class MyState {
+    public static class InitialState {
         ArrayList<FxRate> fxRatesList = new ArrayList<>();
         FxRateContainer fxRateContainer = new FxRateContainerImpl();
 
 
         Long iterations  = 100_000L;
         FxRate fxRate = new FxRate(90.0, 1L);
-        int employeeIndex = -1;
+
+        long begin = Instant.now().toEpochMilli();
+        long end = -1;
 
         @Setup(Level.Trial)
         public void setUp() {
@@ -47,50 +49,41 @@ public class MyBenchmark {
                 fxRatesList.add(new FxRate(92.0, 2L));
             }
 
-            fxRatesList.add(fxRate);
-            employeeIndex = fxRatesList.indexOf(fxRate);
+            end = Instant.now().toEpochMilli();
+            fxRateContainer.add( "USDRUB", generateFxRate(), end);
+
+
 
         }
 
     }
 
     @Benchmark
-    public void testAdd( MyState state) {
-
+    public void testAdd( InitialState state) {
         state.fxRatesList.add(new FxRate(state.iterations.doubleValue(), Instant.now().toEpochMilli()));
     }
 
     @Benchmark
-    public void testAddMap( MyState state) {
+    public void testAddMap( InitialState state) {
 
         state.fxRateContainer.add("USDRUB", generateFxRate(), Instant.now().toEpochMilli());
     }
 
-
     @Benchmark
-    public void testAddAt( MyState state) {
-        state.fxRatesList.add(state.iterations.intValue(), new FxRate(state.iterations.doubleValue(), Instant.now().toEpochMilli()));
+    public Double testGetMap(InitialState state) {
+        return state.fxRateContainer.get("USDRUB", state.end);
     }
 
     @Benchmark
-    public Boolean testContains(MyState state)  {
-        return state.fxRatesList.contains(state.fxRate);
+    public Double testAverageMap(InitialState state) {
+        return state.fxRateContainer.average("EURRUB", state.begin + (state.end - state.begin)/2, state.end);
     }
 
     @Benchmark
-    public int testIndexOf(MyState state)  {
-        return state.fxRatesList.indexOf(state.fxRate);
+    public Double testWeightedAverageMap(InitialState state) {
+        return state.fxRateContainer.weightedAverage("USDRUB", state.begin + (state.end - state.begin)/2, state.end);
     }
 
-    @Benchmark
-    public FxRate testGet(MyState state) {
-        return state.fxRatesList.get(state.employeeIndex);
-    }
-
-    @Benchmark
-    public Boolean testRemove(MyState state)  {
-        return state.fxRatesList.remove(state.fxRate);
-    }
 
     private static double generateFxRate() {
         double leftLimit = 80D;
@@ -100,6 +93,10 @@ public class MyBenchmark {
 
     private static boolean isXorEven(int x) {
         return (x ^ 1) > x;
+    }
+
+    private static String calcCcyPair(int x) {
+       return x % 3 == 0 ? "USDEUR" : x % 2 == 0 ? "USDRUB" : "EURRUB";
     }
 
 }

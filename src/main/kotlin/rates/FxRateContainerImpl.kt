@@ -22,7 +22,7 @@ class FxRateContainerImpl : FxRateContainer {
 
 
     // seems it called the weighted average exchange rate
-    fun average2(ccyPair: String, start: Long, end: Long): Double = getFxRatesInPeriod(ccyPair, start, end)
+    override fun weightedAverage(ccyPair: String, start: Long, end: Long): Double = getFxRatesInPeriod(ccyPair, start, end)
         .run {
             mapIndexed { i, fxRate ->
                 FxRateDuration( //map every rate to its duration
