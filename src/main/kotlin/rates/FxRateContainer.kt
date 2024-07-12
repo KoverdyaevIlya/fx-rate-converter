@@ -1,3 +1,5 @@
+package rates
+
 interface FxRateContainer {
     /**
      * Adds Fx Rate for specified currency pair and timestamp to the container

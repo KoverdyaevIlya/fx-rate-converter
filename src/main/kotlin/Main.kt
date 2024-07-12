@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
 //            “timestamp” : 1579598352},
 //            where timestamp is an epoch timestamp.
 //            Let’s assume that the feed returns a message
-//    in the correct order. You need to implement interface FxRateContainer:
+//    in the correct order. You need to implement interface benchmark.FxRateContainer:
 //
 
 

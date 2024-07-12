@@ -1,3 +1,5 @@
+package rates
+
 class FxRateContainerImpl : FxRateContainer {
 
     private var fxRatesMap: MutableMap<String, MutableList<FxRate>> = mutableMapOf()
@@ -45,7 +47,5 @@ class FxRateContainerImpl : FxRateContainer {
 }
 
 
-data class FxRate(val rate: Double, val timestamp: Long) {
-}
 
 data class FxRateDuration(val rate: Double, val duration: Long)

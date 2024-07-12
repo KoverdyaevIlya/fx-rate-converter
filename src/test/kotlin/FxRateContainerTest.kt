@@ -1,5 +1,5 @@
+import rates.FxRateContainerImpl
 import org.junit.jupiter.api.Test
-import java.lang.Thread.sleep
 import java.util.*
 import kotlin.test.assertEquals
 
