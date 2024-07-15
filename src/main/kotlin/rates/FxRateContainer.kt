@@ -1,3 +1,5 @@
+package rates
+
 interface FxRateContainer {
     /**
      * Adds Fx Rate for specified currency pair and timestamp to the container
@@ -12,4 +14,11 @@ interface FxRateContainer {
      * Returns average Fx Rate in period from start to end inclusively
      */
     fun average(ccyPair: String, start: Long, end: Long): Double
+
+    /**
+     * Returns weigthed average Fx Rate in period from start to end inclusively
+     */
+    fun weightedAverage(ccyPair: String, start: Long, end: Long): Double
+
+    fun count(): Int
 }

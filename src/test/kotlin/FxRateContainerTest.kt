@@ -1,5 +1,5 @@
+import rates.FxRateContainerImpl
 import org.junit.jupiter.api.Test
-import java.lang.Thread.sleep
 import java.util.*
 import kotlin.test.assertEquals
 
@@ -47,7 +47,7 @@ class FxRateContainerTest {
         assertEquals(fxRateContainerImpl.average("EURRUB", now + 100, now),  Double.NaN)
 
         println("average is $average")
-        val average2 = fxRateContainerImpl.average2("USDRUB", now + 50, now + 400)
+        val average2 = fxRateContainerImpl.weightedAverage("USDRUB", now + 50, now + 400)
         println("weighted average is $average2")
 
 

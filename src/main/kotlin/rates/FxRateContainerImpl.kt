@@ -1,16 +1,18 @@
+package rates
+
 class FxRateContainerImpl : FxRateContainer {
 
-    private var fxRates: MutableList<FxRate> = mutableListOf()
+    private var fxRatesMap: MutableMap<String, MutableList<FxRate>> = mutableMapOf()
 
     override fun add(ccyPair: String, fxRate: Double, timestamp: Long) {
-        fxRates.add(FxRate(ccyPair, fxRate, timestamp))
+        fxRatesMap.getOrPut(ccyPair) { mutableListOf() }.add(FxRate(fxRate, timestamp))
     }
 
     override fun get(ccyPair: String, timestamp: Long): Double? = getFxRate(ccyPair, timestamp)?.rate
 
-    private fun getFxRate(ccyPair: String, timestamp: Long) = fxRates.filter { it.ccyPair == ccyPair }
-        .sortedBy { it.timestamp }
-        .lastOrNull { it.timestamp <= timestamp }
+    private fun getFxRate(ccyPair: String, timestamp: Long) =
+        fxRatesMap[ccyPair]?.lastOrNull { it.timestamp <= timestamp }
+
 
     //just a base average
     override fun average(ccyPair: String, start: Long, end: Long): Double =
@@ -20,7 +22,7 @@ class FxRateContainerImpl : FxRateContainer {
 
 
     // seems it called the weighted average exchange rate
-    fun average2(ccyPair: String, start: Long, end: Long): Double = getFxRatesInPeriod(ccyPair, start, end)
+    override fun weightedAverage(ccyPair: String, start: Long, end: Long): Double = getFxRatesInPeriod(ccyPair, start, end)
         .run {
             mapIndexed { i, fxRate ->
                 FxRateDuration( //map every rate to its duration
@@ -36,16 +38,14 @@ class FxRateContainerImpl : FxRateContainer {
         .sumOf { it.rate * it.duration } / (end - start)
 
 
-    private fun getFxRatesInPeriod(ccyPair: String, start: Long, end: Long): MutableList<FxRate> =
-        fxRates.filter { it.ccyPair == ccyPair && it.timestamp in start..end }
-            .sortedBy { it.timestamp }.toMutableList() //just in case if rates added to container in wrong order
-            .also { if (it.isNotEmpty()) it.add(0, getFxRate(ccyPair, start) ?: FxRate(ccyPair, Double.NaN, start)) } //we need to add actual rate from start to the first fetched timestamp
+    private fun getFxRatesInPeriod(ccyPair: String, start: Long, end: Long) =
+        (fxRatesMap[ccyPair] ?: mutableListOf()).filter { it.timestamp in start..end }
+            .toMutableList() //just in case if rates added to container in wrong order
+        .also { if (it.isNotEmpty()) it.add(0, getFxRate(ccyPair, start) ?: FxRate(Double.NaN, start)) } //we need to add actual rate from start to the first fetched timestamp
 
-    fun count() = fxRates.count()
+    override fun count() = fxRatesMap.flatMap { it.value }.count()
 }
 
-
-data class FxRate(val ccyPair: String, val rate: Double, val timestamp: Long) {
-}
+data class FxRate(val rate: Double, val timestamp: Long)
 
 data class FxRateDuration(val rate: Double, val duration: Long)
