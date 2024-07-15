@@ -43,9 +43,9 @@ class FxRateContainerImpl : FxRateContainer {
             .toMutableList() //just in case if rates added to container in wrong order
         .also { if (it.isNotEmpty()) it.add(0, getFxRate(ccyPair, start) ?: FxRate(Double.NaN, start)) } //we need to add actual rate from start to the first fetched timestamp
 
-    fun count() = fxRatesMap.flatMap { it.value }.count()
+    override fun count() = fxRatesMap.flatMap { it.value }.count()
 }
 
-
+data class FxRate(val rate: Double, val timestamp: Long)
 
 data class FxRateDuration(val rate: Double, val duration: Long)

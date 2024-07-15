@@ -1,6 +1,6 @@
 import org.openjdk.jmh.Main
 
-object BenchmarkRunnerKt {
+object BenchmarkRunner {
     @Throws(Exception::class)
     @JvmStatic
     fun main(args: Array<String>) {

@@ -19,4 +19,6 @@ interface FxRateContainer {
      * Returns weigthed average Fx Rate in period from start to end inclusively
      */
     fun weightedAverage(ccyPair: String, start: Long, end: Long): Double
+
+    fun count(): Int
 }
